@@ -9,9 +9,13 @@ def check(password):
     has_lower = False
     has_special = False
     has_length = False
+    score = 0
 
     if len(password) >= min_length:
         has_length = True
+        score += 1
+    if len(password) >= 12:
+        score += 1
 
     for i in password:
         if i.isdigit():
@@ -23,6 +27,22 @@ def check(password):
         if not i.isalnum():
             has_special = True
 
+    if has_digit == True:
+        score += 1
+    if has_upper == True:
+        score += 1
+    if has_lower == True:
+        score += 1
+    if has_special == True:
+        score += 1
+
+    if score <= 2:
+        print("Password strength: Weak")
+    elif 3 <= score <= 4:
+        print("Password strength: Medium")
+    elif score >= 5:
+        print("Password strength: Strong")
+    
     if has_digit == False:
         print("Requirement not met: Lacking digit")
     if has_upper == False:
