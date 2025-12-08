@@ -1,5 +1,3 @@
-password = input("Enter your password: ")
-
 min_length = 8
 common_passwords = ["123456", "admin", "12345678", "123456789", 
                     "password", "Pass@123", "admin123", "P@ssw0rd", "admin@123",
@@ -87,5 +85,12 @@ def display(results):
     if results['has_length'] == False:
         print("Requirement not met: Password too short")    
 
-results = check(password)
-display(results)
+while True:
+    password = input("Enter your password: ")
+    if password == "quit" or password == "q":
+        break
+    elif password == "":
+        print("Please enter a password or type q to quit")
+    else:
+        results = check(password)
+        display(results)
