@@ -10,6 +10,7 @@ def check(password):
     has_special = False
     has_length = False
     score = 0
+    strength = ""
 
     if len(password) >= min_length:
         has_length = True
@@ -37,21 +38,38 @@ def check(password):
         score += 1
 
     if score <= 2:
-        print("Password strength: Weak")
+        strength = "Weak"
     elif 3 <= score <= 4:
-        print("Password strength: Medium")
+        strength = "Medium"
     elif score >= 5:
-        print("Password strength: Strong")
-    
-    if has_digit == False:
-        print("Requirement not met: Lacking digit")
-    if has_upper == False:
-        print("Requirement not met: Lacking uppercase")
-    if has_lower == False:
-        print("Requirement not met: Lacking lowercase letter")
-    if has_special == False:
-        print("Requirement not met: Lacking special character")
-    if has_length == False:
-        print("Requirement not met: Character length too short")
+        strength = "Strong"
 
-check(password)
+    
+    result = {
+        "score": score,
+        "has_digit": has_digit,
+        "has_upper": has_upper,
+        "has_lower": has_lower,
+        "has_special": has_special,
+        "has_length": has_length,
+        "strength": strength
+    }
+
+    return result 
+
+def display(results):
+
+    print("Password Strength: " + results["strength"])
+    if results['has_digit'] == False:
+        print("Requirement not met: Lacking digit")
+    if results['has_upper'] == False:
+        print("Requirement not met: Lacking uppercase letter")
+    if results['has_lower'] == False:
+        print("Requirement not met: Lacking lowercase letter")
+    if results['has_special'] == False:
+        print("Requirement not met: Lacking special character")
+    if results['has_length'] == False:
+        print("Requirement not met: Password too short")    
+
+results = check(password)
+display(results)
