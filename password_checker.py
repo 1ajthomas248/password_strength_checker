@@ -1,6 +1,9 @@
 password = input("Enter your password: ")
 
 min_length = 8
+common_passwords = ["123456", "admin", "12345678", "123456789", 
+                    "password", "Pass@123", "admin123", "P@ssw0rd", "admin@123",
+                    "Admin@123"]
 
 def check(password):
 
@@ -9,6 +12,7 @@ def check(password):
     has_lower = False
     has_special = False
     has_length = False
+    is_common = False
     score = 0
     strength = ""
 
@@ -27,6 +31,10 @@ def check(password):
             has_upper = True
         if not i.isalnum():
             has_special = True
+    
+    for i in common_passwords:
+        if i == password:
+            is_common = True
 
     if has_digit == True:
         score += 1
@@ -37,22 +45,27 @@ def check(password):
     if has_special == True:
         score += 1
 
-    if score <= 2:
-        strength = "Weak"
-    elif 3 <= score <= 4:
-        strength = "Medium"
+    if score == 6 and len(password) > 14:
+        strength = "Very Strong"
     elif score >= 5:
         strength = "Strong"
-
+    elif 3 <= score <= 4:
+        strength = "Medium"
+    elif score <= 2:
+        strength = "Weak"
     
+    if is_common == True:
+        strength = "Weak"
+
     result = {
         "score": score,
+        "is_common": is_common,
         "has_digit": has_digit,
         "has_upper": has_upper,
         "has_lower": has_lower,
         "has_special": has_special,
         "has_length": has_length,
-        "strength": strength
+        "strength": strength,
     }
 
     return result 
@@ -60,6 +73,9 @@ def check(password):
 def display(results):
 
     print("Password Strength: " + results["strength"])
+    if results["is_common"] == True:
+        print("This password is known to be widely used and easily guessed. " \
+        "Choose a different one.")
     if results['has_digit'] == False:
         print("Requirement not met: Lacking digit")
     if results['has_upper'] == False:
