@@ -85,12 +85,13 @@ def display(results):
     if results['has_length'] == False:
         print("Requirement not met: Password too short")    
 
-while True:
-    password = input("Enter your password: ")
-    if password == "quit" or password == "q":
-        break
-    elif password == "":
-        print("Please enter a password or type q to quit")
-    else:
-        results = check(password)
-        display(results)
+if __name__ == "__main__":
+    while True:
+        password = input("Enter your password: ")
+        if password == "quit" or password == "q":
+            break
+        elif password == "":
+            print("Please enter a password or type q to quit")
+        else:
+            results = check(password)
+            display(results)
