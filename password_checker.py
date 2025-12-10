@@ -95,7 +95,7 @@ def display(results):
         print("Requirement not met: " '\033[1;31m' +  "Password too short" + '\033[0m')
 
 if __name__ == "__main__":
-    print("Password Strength Checker")
+    print("-----------------------Password Strength Checker-----------------------")
     while True:
         password = input("Enter a password to analyze (or q to quit): ")
         if password == "quit" or password == "q":
