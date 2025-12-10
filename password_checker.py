@@ -6,6 +6,8 @@ common_passwords = ["123456", "admin", "12345678", "123456789",
 
 def check(password):
 
+    suggestions = []
+
     has_digit = False
     has_upper = False
     has_lower = False
@@ -55,6 +57,21 @@ def check(password):
     
     if is_common == True:
         strength = "Weak"
+    
+    if has_digit == False:
+        suggestions.append("Add at least one number (0–9) to make the password harder to guess.")
+    if has_upper == False:
+        suggestions.append("Include at least one uppercase letter (A–Z) for better complexity.")
+    if has_lower == False:
+        suggestions.append("Include at least one lowercase letter (a–z) for better complexity.")
+    if has_special == False:
+        suggestions.append("Add at least one special character (e.g. !, @, #, $) for better complexity")
+    if has_length == False:
+        suggestions.append("Use at least 8 characters to meet the minimum length requirement.")
+    if is_common == True:
+        suggestions.append("Avoid common passwords; choose something more unique")
+    if strength == "Very Strong":
+        suggestions.append("This password is very strong. Good job!")
 
     result = {
         "score": score,
@@ -65,6 +82,7 @@ def check(password):
         "has_special": has_special,
         "has_length": has_length,
         "strength": strength,
+        "suggestions": suggestions 
     }
 
     return result 
@@ -80,6 +98,8 @@ def display(results):
     elif results['strength'] == 'Very Strong':
         print("Password Strength: " + '\033[1;36m' + results["strength"] + '\033[0m')
 
+    print()
+
     if results["is_common"] == True:
         print('\033[1;31m' + "This password is known to be widely used and easily guessed. " \
         "Choose a different one." + '\033[0m')
@@ -93,6 +113,12 @@ def display(results):
         print("Requirement not met: " '\033[1;31m' +  "Lacking special character" + '\033[0m')
     if results['has_length'] == False:
         print("Requirement not met: " '\033[1;31m' +  "Password too short" + '\033[0m')
+    
+    print()
+
+    print("Suggestions: ")
+    for i in results['suggestions']:
+        print("- " + i)
 
 if __name__ == "__main__":
     print("-----------------------Password Strength Checker-----------------------")

@@ -20,6 +20,7 @@ class PasswordResponse(BaseModel):
     has_lower: bool
     has_special: bool
     has_length: bool
+    suggestions: list[str]
 
 @app.post("/check", response_model=PasswordResponse)
 def check_password(payload: PasswordRequest):
@@ -37,6 +38,7 @@ def check_password(payload: PasswordRequest):
         has_lower=result["has_lower"],
         has_special=result["has_special"],
         has_length=result["has_length"],
+        suggestions=result["suggestions"]
     )
 
     return response
