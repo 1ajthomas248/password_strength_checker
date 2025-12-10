@@ -1,3 +1,4 @@
+
 min_length = 8
 common_passwords = ["123456", "admin", "12345678", "123456789", 
                     "password", "Pass@123", "admin123", "P@ssw0rd", "admin@123",
@@ -70,28 +71,39 @@ def check(password):
 
 def display(results):
 
-    print("Password Strength: " + results["strength"])
+    if results['strength'] == 'Weak':
+        print("Password Strength: " + '\033[1;31m' + results["strength"] + '\033[0m')
+    elif results['strength'] == 'Medium':
+        print("Password Strength: " + '\033[1;33m' + results["strength"] + '\033[0m')
+    elif results['strength'] == 'Strong':
+        print("Password Strength: " + '\033[1;32m' + results["strength"] + '\033[0m')
+    elif results['strength'] == 'Very Strong':
+        print("Password Strength: " + '\033[1;36m' + results["strength"] + '\033[0m')
+
     if results["is_common"] == True:
-        print("This password is known to be widely used and easily guessed. " \
-        "Choose a different one.")
+        print('\033[1;31m' + "This password is known to be widely used and easily guessed. " \
+        "Choose a different one." + '\033[0m')
     if results['has_digit'] == False:
-        print("Requirement not met: Lacking digit")
+        print("Requirement not met: " '\033[1;31m' +  "Lacking digit" + '\033[0m')
     if results['has_upper'] == False:
-        print("Requirement not met: Lacking uppercase letter")
+        print("Requirement not met: " '\033[1;31m' +  "Lacking uppercase letter" + '\033[0m')
     if results['has_lower'] == False:
-        print("Requirement not met: Lacking lowercase letter")
+        print("Requirement not met: " '\033[1;31m' +  "Lacking lowercase letter" + '\033[0m')
     if results['has_special'] == False:
-        print("Requirement not met: Lacking special character")
+        print("Requirement not met: " '\033[1;31m' +  "Lacking special character" + '\033[0m')
     if results['has_length'] == False:
-        print("Requirement not met: Password too short")    
+        print("Requirement not met: " '\033[1;31m' +  "Password too short" + '\033[0m')
 
 if __name__ == "__main__":
+    print("Password Strength Checker")
     while True:
-        password = input("Enter your password: ")
+        password = input("Enter a password to analyze (or q to quit): ")
         if password == "quit" or password == "q":
             break
         elif password == "":
             print("Please enter a password or type q to quit")
         else:
             results = check(password)
+            print()
             display(results)
+            print("------------------------------------------------------------------------------------")
