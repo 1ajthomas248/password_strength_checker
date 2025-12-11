@@ -22,6 +22,9 @@ class PasswordResponse(BaseModel):
     has_length: bool
     suggestions: list[str]
 
+class StatusResponse(BaseModel):
+    status: str
+
 @app.post("/check", response_model=PasswordResponse)
 def check_password(payload: PasswordRequest):
     if payload.password is None or payload.password == "":
@@ -39,6 +42,14 @@ def check_password(payload: PasswordRequest):
         has_special=result["has_special"],
         has_length=result["has_length"],
         suggestions=result["suggestions"]
+    )
+
+    return response
+
+@app.get("/health")
+def check_status():
+    response = StatusResponse(
+        status="ok"
     )
 
     return response
