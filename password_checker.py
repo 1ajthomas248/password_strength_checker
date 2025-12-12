@@ -1,4 +1,4 @@
-
+import math
 min_length = 8
 common_passwords = ["123456", "admin", "12345678", "123456789", 
                     "password", "Pass@123", "admin123", "P@ssw0rd", "admin@123",
@@ -7,6 +7,8 @@ common_passwords = ["123456", "admin", "12345678", "123456789",
 def check(password):
 
     suggestions = []
+    charset_size = 0
+    entropy = 0
 
     has_digit = False
     has_upper = False
@@ -14,14 +16,16 @@ def check(password):
     has_special = False
     has_length = False
     is_common = False
-    score = 0
+    rule_score = 0
     strength = ""
+    entropy_score = 0
+    final_score = 0
 
     if len(password) >= min_length:
         has_length = True
-        score += 1
+        rule_score += 1
     if len(password) >= 12:
-        score += 1
+        rule_score += 1
 
     for i in password:
         if i.isdigit():
@@ -38,22 +42,48 @@ def check(password):
             is_common = True
 
     if has_digit == True:
-        score += 1
+        rule_score += 1
+        charset_size += 10
     if has_upper == True:
-        score += 1
+        rule_score += 1
+        charset_size += 26
     if has_lower == True:
-        score += 1
+        rule_score += 1
+        charset_size += 26
     if has_special == True:
-        score += 1
+        rule_score += 1
+        charset_size += 30
+    
+    if charset_size == 0:
+        entropy = 0
+    else: 
+        entropy = len(password) * math.log2(charset_size)
+    
+    if entropy <= 28:
+        entropy_score = 0
+    elif entropy <= 40:
+        entropy_score = 1
+    elif entropy <= 60:
+        entropy_score = 2
+    elif entropy <= 80:
+        entropy_score = 3
+    else:
+        entropy_score = 4
 
-    if score == 6 and len(password) > 14:
+   
+    final_score = rule_score + entropy_score
+
+    if final_score >= 9:
         strength = "Very Strong"
-    elif score >= 5:
+    elif final_score >= 7:
         strength = "Strong"
-    elif 3 <= score <= 4:
+    elif final_score >= 5:
         strength = "Medium"
-    elif score <= 2:
+    elif final_score >= 3:
         strength = "Weak"
+    else:
+        strength = "Very Weak"
+
     
     if is_common == True:
         strength = "Weak"
@@ -74,7 +104,9 @@ def check(password):
         suggestions.append("This password is very strong. Good job!")
 
     result = {
-        "score": score,
+        "score": final_score,
+        "entropy": entropy,
+        "entropy_score": entropy_score,
         "is_common": is_common,
         "has_digit": has_digit,
         "has_upper": has_upper,
@@ -89,7 +121,9 @@ def check(password):
 
 def display(results):
 
-    if results['strength'] == 'Weak':
+    if results['strength'] == 'Very Weak':
+        print("Password Strength: " + '\033[1;31m' + results["strength"] + '\033[0m')
+    elif results['strength'] == 'Weak':
         print("Password Strength: " + '\033[1;31m' + results["strength"] + '\033[0m')
     elif results['strength'] == 'Medium':
         print("Password Strength: " + '\033[1;33m' + results["strength"] + '\033[0m')
