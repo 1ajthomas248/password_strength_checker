@@ -4,6 +4,51 @@ common_passwords = ["123456", "admin", "12345678", "123456789",
                     "password", "Pass@123", "admin123", "P@ssw0rd", "admin@123",
                     "Admin@123"]
 
+def has_repeated_chars(password):
+    if len(password) < 2:
+        return False
+
+    max_streak = 1
+    current = 1
+
+    for i in range(1, len(password)):
+        if password[i] == password[i-1]:
+            current += 1
+            max_streak = max(max_streak, current)
+        else:
+            current = 1
+
+    return max_streak >= 4
+
+def is_ascending(chunk):
+    for i in range(1, len(chunk)):
+        if ord(chunk[i]) != ord(chunk[i - 1]) + 1:
+            return False
+    
+    return True
+
+def is_descending(chunk):
+    for i in range(1, len(chunk)):
+        if ord(chunk[i]) != ord(chunk[i - 1]) - 1:
+            return False
+    
+    return True
+
+def has_sequence(password):
+    p = password.lower()        
+
+    for i in range (0, len(p) - 3):
+        window = p[i:i+4]
+
+        if not (window.isdigit() or window.isalpha()):
+            continue
+
+        if is_ascending(window) or is_descending(window):
+            return True
+        
+    return False
+
+    
 def check(password):
 
     suggestions = []
@@ -36,6 +81,9 @@ def check(password):
             has_upper = True
         if not i.isalnum():
             has_special = True
+    
+    repeat_chars = has_repeated_chars(password)
+    sequence = has_sequence(password)
     
     for i in common_passwords:
         if i == password:
@@ -72,6 +120,16 @@ def check(password):
 
    
     final_score = rule_score + entropy_score
+
+    if repeat_chars:
+        final_score -= 2
+        suggestions.append("Avoid long runs of the same character.")
+
+    if sequence:
+        final_score -= 1
+        suggestions.append("Avoid predictable sequences like 1234 or abcd.")
+    
+    final_score = max(0, final_score)
 
     if final_score >= 9:
         strength = "Very Strong"
@@ -113,6 +171,8 @@ def check(password):
         "has_lower": has_lower,
         "has_special": has_special,
         "has_length": has_length,
+        "has_repeated_chars": repeat_chars,
+        "has_sequence": sequence,
         "strength": strength,
         "suggestions": suggestions 
     }
