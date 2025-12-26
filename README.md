@@ -5,7 +5,7 @@ This project reinforces Python fundamentals while teaching practical security co
 
 ---
 
-## 🔍 Features
+## Features
 - Evaluates password strength based on:
   - Length  
   - Uppercase letters  
@@ -18,7 +18,7 @@ This project reinforces Python fundamentals while teaching practical security co
 
 ---
 
-## 🎯 Project Purpose
+## Project Purpose
 This project is part of my journey into **cloud engineering, cloud administration, and cybersecurity**.  
 It helps me:
 - Refresh my Python skills  
@@ -27,7 +27,7 @@ It helps me:
 
 ---
 
-## 🧠 How It Works (High-Level Overview)
+## How It Works (High-Level Overview)
 1. User enters a password  
 2. Program checks the password against security criteria  
 3. Each check contributes to an overall score  
@@ -38,7 +38,7 @@ No external dependencies — built with pure Python.
 
 ---
 
-## ▶️ Usage
+## Usage
 Run the script from the command line:
 python password_checker.py
 
@@ -49,7 +49,7 @@ The program will return:
   
 ---
 
-## 📚 What I Learned
+## What I Learned
 - Python input/output handling  
 - Using loops and conditionals for evaluation  
 - Pattern checking (upper/lowercase, digits, symbols)  
@@ -59,7 +59,7 @@ The program will return:
 
 ---
 
-## 🚀 Planned Improvements (Future Versions)
+## Planned Improvements (Future Versions)
 - Add entropy estimation  
 - Add a GUI version (Tkinter)  
 - Add a FastAPI backend for cloud deployment  
@@ -69,7 +69,7 @@ The program will return:
 
 ---
 
-## ✔️ Requirements
+## Requirements
 - Python 3.x  
 - No external libraries needed
 
