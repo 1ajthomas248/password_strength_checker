@@ -1,8 +1,18 @@
 import math
+import re
 min_length = 8
 common_passwords = ["123456", "admin", "12345678", "123456789", 
                     "password", "Pass@123", "admin123", "P@ssw0rd", "admin@123",
                     "Admin@123"]
+
+def normalize_password_input(password):
+    normalized = password.lower().strip()
+    base = normalized
+
+    base = re.sub(r"[!@#$%^&*]+$", "", base)
+    base = re.sub(r"\d+$", "", base)
+    base = re.sub(r"[!@#$%^&*]+$", "", base)
+    return normalized, base 
 
 def has_repeated_chars(password):
     if len(password) < 2:
